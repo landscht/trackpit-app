@@ -1,0 +1,23 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>{{ driver.forename }} {{ driver.surname}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <div class="flex ion-justify-content-center ion-margin">
+    <img width="100" src="/assets/trophy.png" />
+  </div>
+  <ion-list>
+    <ion-list-header>Details</ion-list-header>
+    <ion-item *ngFor="let driverStanding of driver.stats.worldChampions">
+      <ion-label>
+        <h2>Season {{ driverStanding.race.year }}</h2>
+        <h3>{{ driverStanding.points }} points</h3>
+        <p>{{driverStanding.wins}} wins</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

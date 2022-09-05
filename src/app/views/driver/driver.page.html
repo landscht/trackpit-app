@@ -1,0 +1,107 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="driver">{{ driver.forename }} {{ driver.surname }}</ion-title>
+    <ion-buttons slot="end" *ngIf="driver && driver.stats">
+      <app-select-season [seasons]="driver.stats.seasons"
+                         [hideLabel]="true"
+                         [defaultSelected]="defaultSeasonSelected"
+                         (changeSeason)="onChangeSeason($event)"
+                         lines="none"
+                         labelDetails="Select the driver's season to see the statistics for that season"
+                         [transparent]="true"></app-select-season>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+
+    </ion-toolbar>
+  </ion-header>
+  <div id="container-content">
+    <div class="flex flex-column ion-justify-content-center ion-align-items-center" *ngIf="driver">
+      <ion-avatar [style.background-color]="getConstructorColor" class="item-avatar" *ngIf="driver && driver.pictures" >
+        <img [src]="driver.pictures.avatar" />
+      </ion-avatar>
+      <h1 class="text-title ">{{ driver.forename + ' ' + driver.surname }}</h1>
+      <p class="ion-no-margin" *ngIf="driver && driver.driverConstructor">Driver for {{ driver.driverConstructor.name }}</p>
+    </div>
+    <ion-card class="card-radius" *ngIf="driver && driver.driverConstructor" button>
+      <ion-card-content class="flex ion-align-items-center">
+        <img width="100" class="ion-margin-end" *ngIf="driver.driverConstructor.pictures" [src]="driver.driverConstructor.pictures.logo" >
+        <p>{{ driver.driverConstructor.name }}</p>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="card-radius" *ngIf="driver && driver.stats && driver.stats.worldChampions" button (click)="openModalWorldChampionship(driver)">
+      <ion-card-content class="flex ion-align-items-center">
+        <img width="25" class="ion-margin-end" src="/assets/trophy.png" >
+        <p>{{ driver.stats.worldChampions.length}} World Drivers' Championship</p>
+      </ion-card-content>
+    </ion-card>
+    <app-card-chart *ngIf="driver && driver.lastTenRaces.length > 0"
+                    [chartColor]="getConstructorColor"
+                    [xData]="getXData"
+                    [yReverse]="true"
+                    [yData]="getYData"
+                    [titleStat]="getLastResult.positionText + 'e'" subtitleText="Last result">
+      <div class="flex ion-justify-content-around ion-margin-bottom">
+        <div class="flex flex-column ion-align-items-center" *ngFor="let result of driver.lastTenRaces">
+          <p [class.text-success]="result.positionText === '1'">{{ result.positionText }}</p>
+          <ion-avatar class="flag-avatar ion-align-items-center">
+            <img [src]="result.race.circuit.countryPictures.flag" >
+          </ion-avatar>
+        </div>
+      </div>
+    </app-card-chart>
+    <div class="flex ion-justify-content-center">
+      <app-card-chart *ngIf="driver && driver.lastTenDriverStandings.length > 0"
+                      [xData]="getXDataDriverStandings"
+                      [yData]="getYDataDriverStandingsPos"
+                      [yReverse]="true"
+                      [column]="true"
+                      [titleStat]="getLastDriverStanding.position + 'e'"
+                      subtitleText="Driver standing"
+                      [chartColor]="getConstructorColor"></app-card-chart>
+      <app-card-chart *ngIf="driver && driver.lastTenDriverStandings.length > 0"
+                      [xData]="getXDataDriverStandings"
+                      [yMin]="0"
+                      [column]="true"
+                      [yMax]="driver.maxDriverStanding"
+                      [yData]="getYDataDriverStandingsPoint"
+                      [titleStat]="getLastDriverStanding.points + ''"
+                      subtitleText="Points"
+                      [chartColor]="getConstructorColor"></app-card-chart>
+    </div>
+    <ion-list *ngIf="driver && driver.stats">
+      <ion-list-header>Statistics</ion-list-header>
+      <ion-item>
+        <ion-label>Number of seasons</ion-label>
+        <ion-label slot="end">{{ driver.stats.seasons.length }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Pit stops</ion-label>
+        <ion-label slot="end">{{ driver.stats.nbPitStops }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Races</ion-label>
+        <ion-label slot="end">{{ driver.stats.nbRaces }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Podiums</ion-label>
+        <ion-label slot="end">{{ driver.stats.nbPodiums }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Wins</ion-label>
+        <ion-label slot="end">{{ driver.stats.nbWins }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Finish in point</ion-label>
+        <ion-label slot="end">{{ driver.stats.nbInPoints }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

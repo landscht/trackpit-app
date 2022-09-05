@@ -1,0 +1,6 @@
+<ion-toolbar color="transparent">
+  <ion-title size="large">{{ title }}</ion-title>
+  <ion-buttons slot="end" *ngIf="!hideButton">
+    <ion-button [routerLink]="routerLink">{{ buttonText }}</ion-button>
+  </ion-buttons>
+</ion-toolbar>

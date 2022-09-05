@@ -1,0 +1,14 @@
+<div *ngIf="!isSprintFormat">
+  <p>{{ race.fp1Date | date:'dd MMM' }} {{ race.fp1Time | date:'HH:mm':'+0300' }} - FP1</p>
+  <p>{{ race.fp2Date | date:'dd MMM' }} {{ race.fp2Time | date:'HH:mm':'+0300' }} - FP2</p>
+  <p>{{ race.fp3Date | date:'dd MMM' }} {{ race.fp3Time | date:'HH:mm':'+0300' }} - FP3</p>
+  <p>{{ race.qualiDate | date:'dd MMM' }} {{ race.qualiTime | date:'HH:mm':'+0300' }} - Qualifying</p>
+  <p class="text-danger">{{ race.date | date:'dd MMM' }} {{ race.time | date:'HH:mm':'+0300' }} - Race</p>
+</div>
+<div *ngIf="isSprintFormat">
+  <p>{{ race.fp1Date | date:'dd MMM' }} {{ race.fp1Time | date:'HH:mm':'+0300' }} - FP1</p>
+  <p>{{ race.qualiDate | date:'dd MMM' }} {{ race.qualiTime | date:'HH:mm':'+0300' }} - Qualifying</p>
+  <p>{{ race.fp2Date | date:'dd MMM' }} {{ race.fp2Time | date:'HH:mm':'+0300' }} - FP2</p>
+  <p>{{ race.sprintDate | date:'dd MMM' }} {{ race.sprintTime | date:'HH:mm':'+0300' }} - Sprint</p>
+  <p class="text-danger">{{ race.date | date:'dd MMM' }} {{ race.time | date:'HH:mm':'+0300' }} - Race</p>
+</div>

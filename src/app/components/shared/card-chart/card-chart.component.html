@@ -1,0 +1,14 @@
+<ion-card class="card-radius" [class.mt-0]="column">
+  <div class="flex ion-align-items-center ion-no-padding" [class.flex-column]="column" [class.ion-justify-content-start]="column">
+    <ion-card [style.background-color]="chartColor + '34'" class=" card-radius card-chart">
+      <ion-card-content class="ion-no-padding">
+        <canvas #barChartLastRace></canvas>
+      </ion-card-content>
+    </ion-card>
+    <div class="flex flex-column">
+      <ion-card-title style="font-size: 50px">{{ titleStat }}</ion-card-title>
+      <p>{{ subtitleText }}</p>
+    </div>
+  </div>
+  <ng-content></ng-content>
+</ion-card>

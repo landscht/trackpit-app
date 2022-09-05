@@ -1,0 +1,6 @@
+<ion-item [class.item-transparent]="transparent" [lines]="lines">
+  <ion-label *ngIf="!hideLabel">{{ label }}</ion-label>
+  <ion-select [class.item-transparent]="transparent" [interfaceOptions]="{ header: 'Season', message: labelDetails}" [(ngModel)]="seasonSelected" [compareWith]="compareFn" (ionChange)="onChangeSeason()" interface="popover" placeholder="Select One">
+    <ion-select-option [value]="season" *ngFor="let season of getSeasons()">{{ season.year }}</ion-select-option>
+  </ion-select>
+</ion-item>

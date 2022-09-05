@@ -1,0 +1,26 @@
+<ion-card *ngIf="race" button [routerLink]="'/race/' + race.raceId" class="card-radius">
+  <img *ngIf="race.circuit.pictures" [src]="race.circuit.pictures.banner"  alt="banner"/>
+  <ion-card-header>
+    <ion-card-subtitle>{{ race.name }}</ion-card-subtitle>
+    <ion-card-subtitle>{{ race.fp1Date | date: 'dd MMM' }} - {{ race.date | date: 'dd MMM' }}</ion-card-subtitle>
+    <ion-card-title>{{ race.circuit.location}} - {{race.circuit.country}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <app-race-date [race]="race"></app-race-date>
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="!race" button>
+  <ion-skeleton-text class="ion-no-margin" style="height: 150px" animated></ion-skeleton-text>
+  <ion-card-header>
+    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%; height: 30px"></ion-skeleton-text>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 75%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+  </ion-card-content>
+</ion-card>

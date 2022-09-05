@@ -1,0 +1,30 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>{{team.name}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <app-banner-constructor [team]="team"></app-banner-constructor>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <app-title-section title="Summary"
+                           class="ion-margin-top"
+                           [hideButton]="true"></app-title-section>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <app-card-number num="1"
+                         details="Constructor standing"></app-card-number>
+      </ion-col>
+      <ion-col size="6">
+        <app-card-number num="245"
+                         details="Points"></app-card-number>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

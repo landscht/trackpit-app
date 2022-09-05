@@ -1,0 +1,121 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Retour"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{race ? race.name : ''}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar color="transparent" style="height: 0; padding: 0"></ion-toolbar>
+  </ion-header>
+  <ion-card class="card-profil"
+            *ngIf="race && race.circuit.pictures"
+            [ngStyle]="{
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            height: '200px',
+            borderRadius: 0,
+            backgroundImage: 'url(\'' + race.circuit.pictures.banner + '\')'
+          }">
+  </ion-card>
+  <div id="container-content" *ngIf="race">
+    <ion-item lines="full">
+      <ion-label>
+        <p>
+          <ion-chip>
+            <ion-avatar *ngIf="race.circuit.countryPictures && race.circuit.countryPictures.flag">
+              <img [src]="race.circuit.countryPictures.flag" />
+            </ion-avatar>
+            <ion-label>{{race.name}}</ion-label>
+          </ion-chip>
+        </p>
+        <p class="flex ion-align-items-center ion-text-wrap"><ion-icon name="location" class="ion-margin-end"></ion-icon>{{race.circuit.name}}</p>
+        <p class="flex ion-align-items-center"><ion-icon name="pin" class="ion-margin-end"></ion-icon>{{race.circuit.country}} - {{race.circuit.location}}</p>
+      </ion-label>
+      <ion-card slot="end">
+        <ion-card-content class="ion-text-center">
+          <h2>{{ race.fp1Date | date: 'dd' }}-{{ race.date | date: 'dd MMM' }}</h2>
+          <h1 class="text-danger">{{2022}}</h1>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+    <app-title-section *ngIf="race.results.length > 1 || race.qualifying.length > 1"
+                       [hideButton]="true"
+                       title="Results"></app-title-section>
+    <ion-segment [(ngModel)]="segmentResults">
+      <ion-segment-button value="race" *ngIf="race.results.length > 1">
+        <ion-label>Race</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="q3" *ngIf="race.qualifying.length > 1">
+        <ion-label>Q3</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="q2" *ngIf="race.qualifying.length > 1">
+        <ion-label>Q2</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="q1" *ngIf="race.qualifying.length > 1">
+        <ion-label>Q1</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <ion-list *ngIf="segmentResults === 'race' && race.results.length > 1">
+      <ion-list-header>Race</ion-list-header>
+      <ion-item *ngFor="let result of race.results">
+        <ion-note slot="start" style="width: 25px">{{result.position ? result.position : 'out'}}</ion-note>
+        <ion-label>
+          <h3>{{result.driver.forename}} {{result.driver.surname}}</h3>
+          <p>{{result.constructorModel.name}}</p>
+        </ion-label>
+        <ion-label slot="end">
+          <p [class.text-danger]="!result.time">{{result.time ? result.time : result.status.status}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list *ngIf="segmentResults !== 'race' && race.qualifying.length > 1">
+      <ion-list-header class="ion-text-uppercase">{{segmentResults}}</ion-list-header>
+      <ion-item *ngFor="let qualify of filterQualifying(); let index = index">
+        <ion-note slot="start" style="width: 25px">{{ index + 1 }}</ion-note>
+        <ion-label>
+          <h3>{{qualify.driver.forename}} {{qualify.driver.surname}}</h3>
+          <p>{{qualify.constructorModel.name}}</p>
+        </ion-label>
+        <ion-label slot="end">
+          <p>{{segmentResults === 'q3' ? qualify.q3 : segmentResults === 'q2' ? qualify.q2 : qualify.q1}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <app-title-section title="Program"
+                       [hideButton]="true"></app-title-section>
+    <ion-card class="card-radius">
+      <ion-card-content>
+        <app-race-date [race]="race"></app-race-date>
+      </ion-card-content>
+    </ion-card>
+    <app-title-section title="Maps"
+                       *ngIf="race.circuit.pictures && race.circuit.pictures.map"
+                       [hideButton]="true"></app-title-section>
+    <ion-card *ngIf="race.circuit.pictures && race.circuit.pictures.map">
+      <img [src]="race.circuit.pictures.map">
+    </ion-card>
+    <app-title-section title="Statistics"
+                       *ngIf="race.results.length > 1"
+                       [hideButton]="true"></app-title-section>
+    <ion-card class="card-radius" *ngIf="race.results.length > 1">
+      <ion-card-header>
+        <ion-card-title>Positions</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-no-padding">
+        <canvas #barChart></canvas>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="card-radius" *ngIf="race.results.length > 1">
+      <ion-card-header>
+        <ion-card-title>Pit stops</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-no-padding">
+        <canvas #barChartPitStop></canvas>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
